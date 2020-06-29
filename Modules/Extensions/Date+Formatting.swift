@@ -27,4 +27,14 @@ public extension Date {
   var utcIsoString: String {
     return Self.utcIsoFormatter.string(from: self)
   }
+
+  private static let millisecondsFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd@HH:mm:ss.SSSS"
+    return formatter
+  }()
+
+  var formattedWithMillis: String {
+    return Self.millisecondsFormatter.string(from: self)
+  }
 }

@@ -37,7 +37,7 @@ extension Logic.ExposureDetection {
     func sideEffect(_ context: SideEffectContext<AppState, AppDependencies>) throws {
       if case .foreground = self.type {
         context.dependencies.pushNotification.scheduleLocalNotification(
-          .init(title: "Foreground detection started", body: "Foreground detection has started"),
+          .init(title: "Foreground detection started", body: "\(Date().formattedWithMillis)\nForeground detection has started"),
           with: .timeInterval(5)
         )
       }
@@ -319,19 +319,19 @@ extension Logic.ExposureDetection {
         }
 
         title = "Skipped"
-        message = "Exposure detection was skipped (enStatus: \(enStatus), lastDetection: \(lastDetectionString), lastChunk: \(latestProcessedChunk.map { String($0) } ?? "none"))"
+        message = "\(Date().formattedWithMillis)\nExposure detection was skipped (enStatus: \(enStatus), lastDetection: \(lastDetectionString), lastChunk: \(latestProcessedChunk.map { String($0) } ?? "none"))"
       case .fullDetection(_, let summary, _, let earliestChunk, let latestChunk):
         title = "Success"
-        message = "Exposure detection was performed successfully: full, \(summary.matchedKeyCount) matches, chunks [\(earliestChunk), \(latestChunk)]"
+        message = "\(Date().formattedWithMillis)\nExposure detection was performed successfully: full, \(summary.matchedKeyCount) matches, chunks [\(earliestChunk), \(latestChunk)]"
       case .partialDetection(_, let summary, let earliestChunk, let latestChunk):
         title = "Success"
-        message = "Exposure detection was performed successfully: partial, \(summary.matchedKeyCount) matches, chunks [\(earliestChunk), \(latestChunk)]"
+        message = "\(Date().formattedWithMillis)\nExposure detection was performed successfully: partial, \(summary.matchedKeyCount) matches, chunks [\(earliestChunk), \(latestChunk)]"
       case .error(.timeout):
         title = "Timeout"
-        message = "Background task timed out"
+        message = "\(Date().formattedWithMillis)\nBackground task timed out"
       case .error(let error):
         title = "Error"
-        message = "Background task resulted in error: \(error)"
+        message = "\(Date().formattedWithMillis)\nBackground task resulted in error: \(error)"
       }
 
       context.dependencies.pushNotification.scheduleLocalNotification(
